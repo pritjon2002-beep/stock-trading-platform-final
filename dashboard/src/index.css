@@ -416,7 +416,7 @@ hr {
 }
 
 .order-table tr td:last-child {
-  font-size: 0.6rem;
+  font-size: 0.7rem;
 }
 
 .order-table td {
@@ -842,5 +842,8 @@ hr {
   background-color: rgb(212, 212, 212);
 }
 
+.price {
+  margin-left: 30px;
+}
 
 
