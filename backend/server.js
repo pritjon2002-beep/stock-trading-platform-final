@@ -124,6 +124,16 @@ app.get("/positions", async(req,res)=>{
 res.send("data saved sucessfully");
 });
 
+
+app.get("/allHoldings", async(req,res)=>{
+  let allHoldings = await HoldingsModel.find({});
+  res.json(allHoldings);
+});
+app.get("/allPositions", async(req,res)=>{
+  let allPositions = await PositionsModel.find({});
+  res.json(allPositions);
+});
+
 app.listen(PORT, () => {
   console.log(`App Started on port ${PORT}`);
 });
