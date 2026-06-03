@@ -15,6 +15,7 @@ app.use(bodyPaser.json());
 
 const { HoldingsModel } = require('./model/HoldingsModel');
 const { PositionsModel } = require('./model/PositionsModel');
+const { OrdersModel } = require('./model/OrdersModel');
 
 const PORT = process.env.PORT || 3002;
 const uri = process.env.MONGO_URL;
@@ -216,6 +217,29 @@ app.get("/allHoldings", async(req,res)=>{
 app.get("/allPositions", async(req,res)=>{
   let allPositions = await PositionsModel.find({});
   res.json(allPositions);
+});
+
+app.post("/newOrder", async(req,res)=>{
+ try { let newOrder = new OrdersModel({
+    name: req.body.name,
+    qty: req.body.qty,
+    price: req.body.price,
+    mode: req.body.mode,
+  });
+  
+await newOrder.save();
+   res.status(201).json({
+      message: "Order saved successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Error saving order",
+    });
+  }
+
+
+
 });
 
 app.listen(PORT, () => {
