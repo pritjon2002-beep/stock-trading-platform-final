@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const bodyPaser = require("body-parser");
 const cors = require("cors");
 
-
+// sell task , fetching orders form database remaining .
 
 const app = express();
 
