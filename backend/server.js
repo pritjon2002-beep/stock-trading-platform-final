@@ -9,6 +9,7 @@ const cors = require("cors");
 const  { UserModel } = require("./model/UserModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const authMiddleware = require("./middleware/authMiddleware");
 
 
 const app = express();
