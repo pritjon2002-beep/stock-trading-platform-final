@@ -1,4 +1,4 @@
-require('dotenv').config();
+ require('dotenv').config();
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -6,7 +6,10 @@ const mongoose = require("mongoose");
 const bodyPaser = require("body-parser");
 const cors = require("cors");
 
-// sell task , fetching orders form database remaining .
+const  { UserModel } = require("./model/UserModel");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
 
 const app = express();
 
