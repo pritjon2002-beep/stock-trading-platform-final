@@ -1,10 +1,14 @@
 import React, { useState } from "react"; //hooks
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+
+
 
 
 const Menu = () => {
   const [selectedMenu, setSelectedMenu] = useState(0);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleMenuClick = (index) => {
     setSelectedMenu(index);
@@ -13,6 +17,11 @@ const Menu = () => {
   const handleProfileClick = (index) => {
     setIsProfileDropdownOpen(!isProfileDropdownOpen);
   };
+
+  const logout = () => {
+  localStorage.removeItem("token");
+  navigate("/login");
+};
 
   const menuClass = "menu";
   const activeMenuClass = "menu selected";
@@ -99,6 +108,13 @@ const Menu = () => {
           <div className="avatar">ZU</div>
           <p className="username">USERID</p>
         </div>
+
+        <button
+  className="btn btn-danger btn-sm mt-2"
+  onClick={logout}
+>
+  Logout
+</button>
         
       </div>
     </div>

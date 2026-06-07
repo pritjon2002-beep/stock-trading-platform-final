@@ -13,6 +13,7 @@ const authMiddleware = require("./middleware/authMiddleware");
 
 
 const app = express();
+app.use(express.json());
 
 app.use(cors());
 app.use(bodyPaser.json());
@@ -250,6 +251,10 @@ await newOrder.save();
 
 app.post("/signup", async (req, res) => {
   try {
+
+     console.log("Signup request received");
+    console.log(req.body);
+
     const { name, email, password } = req.body;
 
     const userExists = await UserModel.findOne({ email });
@@ -275,6 +280,7 @@ app.post("/signup", async (req, res) => {
     });
 
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Server Error",
     });
@@ -322,11 +328,13 @@ app.post("/login", async (req, res) => {
     });
 
   } catch (error) {
+      console.error("Signup Error:", error);
     res.status(500).json({
-      message: "Server Error",
+      message: error.message,
     });
   }
 });
+
 
 
 
