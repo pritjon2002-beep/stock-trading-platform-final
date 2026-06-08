@@ -25,6 +25,8 @@ function Login() {
         res.data.token
       );
 
+      localStorage.setItem('name', res.data.user.name);
+
       navigate("/");
     } catch (err) {
       alert("Invalid Credentials");
