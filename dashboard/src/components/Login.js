@@ -26,6 +26,7 @@ function Login() {
       );
 
       localStorage.setItem('name', res.data.user.name);
+      localStorage.setItem("email", res.data.user.email);
 
       navigate("/");
     } catch (err) {

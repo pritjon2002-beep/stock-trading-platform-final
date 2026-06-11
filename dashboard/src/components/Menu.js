@@ -1,4 +1,4 @@
-import React, { useState } from "react"; //hooks
+import React, { useState , useEffect, useRef } from "react"; //hooks
 import { Link, Navigate, useNavigate } from "react-router-dom";
 
 
@@ -8,20 +8,31 @@ const Menu = () => {
   const [selectedMenu, setSelectedMenu] = useState(0);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
 
+    const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
-  const handleMenuClick = (index) => {
-    setSelectedMenu(index);
-  };
+    const userName = localStorage.getItem("name") || "User";
+  const userEmail = localStorage.getItem("email") || "";
+  const firstLetter = userName.charAt(0).toUpperCase();
 
-  const handleProfileClick = (index) => {
-    setIsProfileDropdownOpen(!isProfileDropdownOpen);
-  };
+  const handleMenuClick = (index) => setSelectedMenu(index);
 
+  
   const logout = () => {
-  localStorage.removeItem("token");
-  navigate("/login");
+    localStorage.clear();
+    navigate("/login");
 };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsProfileDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const menuClass = "menu";
   const activeMenuClass = "menu selected";
@@ -104,17 +115,28 @@ const Menu = () => {
           </li>
         </ul>
         <hr />
-        <div className="profile" onClick={handleProfileClick}>
-          <div className="avatar">ZU</div>
-          <p className="username">USERID</p>
-        </div>
+    <div className="profile-dropdown" ref={dropdownRef}>
+          <div className="profile" onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}>
+            <div className="avatar">{firstLetter}</div>
+           
+          </div>
 
-        <button
-  className="btn btn-danger btn-sm mt-2"
-  onClick={logout}
->
-  Logout
-</button>
+          {isProfileDropdownOpen && (
+            <div className="dropdown-menu">
+              <div className="dropdown-header">
+                <div className="avatar-large">{firstLetter}</div>
+                <div className="dropdown-info">
+                  <p className="dropdown-name">{userName}</p>
+                  <p className="dropdown-email">{userEmail}</p>
+                </div>
+              </div>
+              <hr />
+              <button className="logout-btn" onClick={logout}>
+                Logout
+              </button>
+            </div>
+          )}
+          </div>
         
       </div>
     </div>
