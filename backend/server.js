@@ -247,98 +247,9 @@ await newOrder.save();
 
 });
 
-//SIGNUP ROUTE
-
-app.post("/signup", async (req, res) => {
-  try {
-
-     console.log("Signup request received");
-    console.log(req.body);
-
-    const { name, email, password } = req.body;
-
-    const userExists = await UserModel.findOne({ email });
-
-    if (userExists) {
-      return res.status(400).json({
-        message: "User already exists",
-      });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const user = new UserModel({
-      name,
-      email,
-      password: hashedPassword,
-    });
-
-    await user.save();
-
-    res.status(201).json({
-      message: "Account created successfully",
-    });
-
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      message: "Server Error",
-    });
-  }
-});
 
 
-//LOGIN ROUTE
-app.post("/login", async (req, res) => {
-  try {
-    const { email, password } = req.body;
 
-    const user = await UserModel.findOne({ email });
-
-    if (!user) {
-      return res.status(400).json({
-        message: "Invalid Email",
-      });
-    }
-
-    const isMatch = await bcrypt.compare(
-      password,
-      user.password
-    );
-
-    if (!isMatch) {
-      return res.status(400).json({
-        message: "Invalid Password",
-      });
-    }
-
-    const token = jwt.sign(
-      {
-        id: user._id,
-      },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "7d",
-      }
-    );
-
-    res.json({
-      token,
-  user: {   
-    name: user.name,  
-    email: user.email,   
-  },
-
-      message: "Login Successful",
-    });
-
-  } catch (error) {
-      console.error("Signup Error:", error);
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-});
 
 
 

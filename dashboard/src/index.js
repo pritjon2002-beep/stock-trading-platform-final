@@ -1,43 +1,52 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+
 import {
   BrowserRouter,
   Routes,
   Route,
 } from "react-router-dom";
 
+import { ClerkProvider } from "@clerk/react";
+
 import "./index.css";
 
 import Home from "./components/Home";
-import Login from "./components/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
+
+
+const clerkPublishableKey =
+process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
+
 
 const root = ReactDOM.createRoot(
   document.getElementById("root")
 );
 
+
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
 
-      <Routes>
+    <ClerkProvider publishableKey={clerkPublishableKey}>
 
-        <Route
-          path="/login"
-          element={<Login />}
-        />
+      <BrowserRouter>
 
-        <Route
-          path="/*"
-          element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          }
-        />
+        <Routes>
 
-      </Routes>
+          <Route
+            path="/*"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
 
-    </BrowserRouter>
+        </Routes>
+
+      </BrowserRouter>
+
+    </ClerkProvider>
+
   </React.StrictMode>
 );

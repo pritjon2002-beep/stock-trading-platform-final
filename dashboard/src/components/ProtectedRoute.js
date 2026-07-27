@@ -1,13 +1,21 @@
-import { Navigate } from "react-router-dom";
+import { Show, RedirectToSignIn } from "@clerk/react";
+
 
 const ProtectedRoute = ({ children }) => {
-  const token = localStorage.getItem("token");
 
-  if (!token) {
-    return <Navigate to="/login" replace />;
-  }
+  return (
+    <>
+      <Show when="signed-in">
+        {children}
+      </Show>
 
-  return children;
+      <Show when="signed-out">
+        <RedirectToSignIn />
+      </Show>
+    </>
+  );
+
 };
+
 
 export default ProtectedRoute;
